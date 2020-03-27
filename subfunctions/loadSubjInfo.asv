@@ -1,0 +1,54 @@
+function subj = loadSubjInfo(handles)
+
+% subject info  
+
+    contents = cellstr(get(handles.value_id, 'String'));
+    subjID = contents{get(handles.value_id,'Value')};
+    prefix = get(handles.edit_filename,'String');
+    contents = cellstr(get(handles.value_acronym,'String'));
+    acronym = contents{get(handles.value_acronym,'Value')};
+    
+    if isempty(prefix)
+        folderName = [pwd filesep 'results' filesep acronym];
+        prefix = acronym;
+    else
+        folderName = [pwd filesep 'results' filesep prefix];
+    end
+    
+% check for already existing files for given prefix and subject
+% count up by one, such that filename contains a new trial id.
+    for n = 1:1000
+        if ~exist([folderName filesep prefix '_S' num2str(str2double(subjID)) '_T' num2str(n) '.mat']); break; end
+    end
+    fname = [prefix '_S' num2str(str2double(subjID)) '_T' num2str(n) '.mat'];
+
+    
+    
+    fname = acronym 
+    subj = load(fname,'subj');
+
+            
+    set(handles.value_last_name,'String',subj.LabID);
+    
+    if get(handles.female,'Value')
+        subj.gender = 'female';
+    elseif get(handles.male,'Value')
+        subj.gender = 'male';
+    else
+        subj.gender = '';
+    end
+    
+    subj.age = str2double(get(handles.value_age,'String'));
+    subj.body_height = str2double(get(handles.value_body_height,'String'));
+    subj.body_weight = str2double(get(handles.value_body_weight,'String'));
+    subj.ankle_height = str2double(get(handles.value_ankle_height,'String'));
+    subj.trochanter_height = str2double(get(handles.value_trochanter_height,'String'));
+    subj.acromion_height = str2double(get(handles.value_acromion_height,'String'));
+    subj.heel_ankle = str2double(get(handles.value_heel_ankle,'String'));
+    subj.foot_length = str2double(get(handles.value_foot_length,'String'));
+    subj.hip_sr_height = str2double(get(handles.value_hip_sr_height,'String'));
+    subj.shoulder_sr_height = str2double(get(handles.value_shoulder_sr_height,'String'));
+    subj.hip_hook_distance = str2double(get(handles.value_hip_hook_distance, 'String'));
+    subj.shoulder_hook_distance = str2double(get(handles.value_sho_hook_distance,'String'));
+    subj.comments = get(handles.value_comments,'String');
+ 
